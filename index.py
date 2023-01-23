@@ -14,6 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.moveLeft = 0
         self.jumpHeight = 0
         self.jumpControll = True
+        self.moveAnimation = 0
         
     def move_right(self):
         self.moveRight = 3
@@ -44,17 +45,29 @@ class Player(pygame.sprite.Sprite):
             self.change_y += 4
         if self.change_y > 330:   
             self.jumpControll = True
-             
-            
     def stop(self):
         self.moveLeft = 0
         self.moveRight = 0
         
+    
+        
 def main():
     def screenUpdate():
         bg = pygame.image.load('mainImg.jpg')
-        screen.blit(bg, (0, 0))
-        screen.blit(player.image, (player.change_x, player.change_y))
+        screen.blit(bg, (0 - player.change_x, 0))
+        if(player.change_x % 2):
+            player.image = pygame.image.load('ninja.png')
+        else:
+            player.image = pygame.image.load('ninjaRun.png')
+
+        if (not player.right):
+            player.image = pygame.transform.flip(player.image, True, False)
+    
+        if(player.change_x   > 700):
+            screen.blit(bg, (1920 - player.change_x, 0))
+        if(player.change_x  < 0):
+            screen.blit(bg, (-1920 - player.change_x, 0))
+        screen.blit(player.image, (80, player.change_y))
         pygame.display.flip()
     #init
     clock = pygame.time.Clock()
